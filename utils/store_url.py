@@ -28,26 +28,16 @@ def get_domain_path(url):
     # Split hostname into parts
     host_parts = host.split('.')
 
-    # Check if the domain ends in uci.edu
-    if len(host_parts) >= 2 and host_parts[-2] == 'uci' and host_parts[-1] == 'edu':
-        base_domain = '.'.join(host_parts[-2:])  # "uci.edu"
-        
-        # Join parts before the base domain as subdomain, but exclude "www"
-        if len(host_parts) > 2:
-            subdomain_parts = host_parts[:-2]
-            if subdomain_parts[0] == "www":
-                subdomain_parts = subdomain_parts[1:]  # Remove "www"
-            subdomain = '/'.join(subdomain_parts)
-        else:
-            subdomain = 'www'
-    else:
-        # Handle other domains
-        base_domain = '.'.join(host_parts[-2:])
+    base_domain = '.'.join(host_parts[-2:])  # "uci.edu"
+    
+    # Join parts before the base domain as subdomain, but exclude "www"
+    if len(host_parts) > 2:
         subdomain_parts = host_parts[:-2]
-        if subdomain_parts and subdomain_parts[0] == "www":
+        if subdomain_parts[0] == "www":
             subdomain_parts = subdomain_parts[1:]  # Remove "www"
-        subdomain = '/'.join(subdomain_parts) if subdomain_parts else 'www'
-
+        subdomain = '/'.join(subdomain_parts)
+    else:
+        subdomain = 'www'
     folder_path = os.path.join(base_domain, subdomain)
     return folder_path
 
