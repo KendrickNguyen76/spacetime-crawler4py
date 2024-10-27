@@ -62,16 +62,21 @@ def is_valid(url):
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed.path.lower()):
             return False
 
-        action_urls = [
+        query_urls = [
             r"action=download&upname=",
             r"action=upload&upname=",
             r"action=login",
             r"action=edit",
             r"action=refcount",
             r"action=crypt",
-            r"action=search&q"
+            r"action=search&q",
+            r"tribe-bar-date=",
+            r"share=",
+            r"outlook-ical=",
+            r"ical=",
+            r"redirect_to="
         ]
-        action_match = any(re.search(action, parsed.query) for action in action_urls)
+        action_match = any(re.search(query, parsed.query) for query in query_urls)
         if action_match:
             return False
 
@@ -88,3 +93,9 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
+
+        #?tribe-bar-date=
+        #?share=
+        #?outlook-ical=
+        #?ical=
+        #?redirect_to=
