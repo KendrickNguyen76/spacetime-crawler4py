@@ -50,7 +50,7 @@ def is_valid(url):
         domain_match = any(re.match(domain, parsed.netloc) for domain in ics_domains)
         if not domain_match:
             return False
-        
+        parsed_path = parsed.path.lower()
         if re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
@@ -59,14 +59,18 @@ def is_valid(url):
             + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed.path.lower()):
+            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed_path):
             return False
-        if "wics-meeting-dbh-5011" in parsed.path.lower():
-            return False
-        if "events/tag/talk/day" in parsed.path.lower():
-            return False
-        if "events/tag/talk" in parsed.path.lower():
-            return False
+        calendar_urls = [
+            "wics-meeting-dbh-5011",
+            "events/tag/talk/day",
+            "events/tag/talk",
+            "events/category/info-session/day"
+        ]
+        for calendar_url in calendar_urls:
+            if calendar_url in parsed_path:
+                return False
+        
         query_urls = [
             r"action=download&upname=",
             r"action=upload&upname=",
