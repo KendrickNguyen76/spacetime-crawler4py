@@ -76,8 +76,8 @@ def is_valid(url):
             r"ical=",
             r"redirect_to="
         ]
-        action_match = any(re.search(query, parsed.query) for query in query_urls)
-        if action_match:
+        query_match = any(re.search(query, parsed.query) for query in query_urls)
+        if query_match:
             return False
 
         return not re.match(
@@ -93,9 +93,3 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
-
-        #?tribe-bar-date=
-        #?share=
-        #?outlook-ical=
-        #?ical=
-        #?redirect_to=
