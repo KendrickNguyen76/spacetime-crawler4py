@@ -61,7 +61,10 @@ def is_valid(url):
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed.path.lower()):
             return False
-
+        if "wics-meeting-dbh-5011" in parsed.path.lower():
+            return False
+        if "events/tag/talk/day" in parsed.path.lower():
+            return False
         query_urls = [
             r"action=download&upname=",
             r"action=upload&upname=",
