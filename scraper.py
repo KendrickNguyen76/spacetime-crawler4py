@@ -88,6 +88,10 @@ def is_valid(url):
         query_match = any(re.search(query, parsed.query) for query in query_urls)
         if query_match:
             return False
+        
+        date_pattern = r'/(\d{4}([-/]\d{2}([-/]\d{2})?)?|(\d{2}([-/]\d{4})))$'
+        if bool(re.search(date_pattern, parsed_path)):
+            return False
 
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
