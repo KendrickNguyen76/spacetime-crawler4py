@@ -10,6 +10,14 @@ from pathlib import Path
 from  bs4 import BeautifulSoup
 from tokenizer import tokenize_line
 
+"""
+Notes for later:
+    - Will need function to keep track of navigating through the link storage system
+    - Since it currently uses ZIP files, may need this: 
+        https://stackoverflow.com/questions/19371860/python-open-file-in-zip-without-temporarily-extracting-it
+    - Also need mechanism for storing current largest file + its word count,
+      NamedTuples may be helpful here
+"""
 
 # file_word_counter()
 # Takes in a file path to an HTML file, opens it, and then uses BeautifulSoup
