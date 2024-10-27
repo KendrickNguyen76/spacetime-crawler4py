@@ -65,6 +65,8 @@ def is_valid(url):
             return False
         if "events/tag/talk/day" in parsed.path.lower():
             return False
+        if "events/tag/talk" in parsed.path.lower():
+            return False
         query_urls = [
             r"action=download&upname=",
             r"action=upload&upname=",
