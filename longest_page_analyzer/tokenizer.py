@@ -1,11 +1,11 @@
 # tokenizer.py
 
 """
-Code taken from the Part A of assignment 1. Will be reused for determining
+Code taken from the Part A of assignment 1. Some parts will be reused for determining
 the longest web page.
 """
 
-# tokenize_line
+# tokenize_line()
 # Needs to be given a string representing a line of text from a file.
 # Iterates through the line of text, and converts it into a series of tokens.
 # Tokens are defined as a sequence of english, alphanumeric characters
@@ -27,7 +27,7 @@ def tokenize_line(line_of_text : str) -> list[str]:
     return words
 
 
-# tokenize
+# tokenize()
 # Needs to be given a file path. Converts all of the text of that file into
 # a list of tokens.
 def tokenize(file_path : str) -> list[str]:
@@ -40,7 +40,7 @@ def tokenize(file_path : str) -> list[str]:
     return all_tokens
 
 
-# compute_word_frequencies
+# compute_word_frequencies()
 # Needs to be given a list of tokens. Records the frequency of each
 # token within a dictionary and then returns it.
 def compute_word_frequencies(token_list : list[str]) -> dict[str, int]:

@@ -38,7 +38,5 @@ def main():
     count = file_word_counter(test_file)
     print(count) # for testing
 
-
-# For Testing:
 if __name__ == "__main__":
     main()
