@@ -1,6 +1,8 @@
 import re
-from urllib.parse import urlparse
-
+from urllib.parse import urlparse, urlunparse
+from bs4 import BeautifulSoup
+from utils.store_url import store_url_content
+from utils.is_valid_checks import infinite_trap, is_large_file
 def scraper(url, resp):
     links = extract_next_links(url, resp)
     return [link for link in links if is_valid(link)]
@@ -15,7 +17,20 @@ def extract_next_links(url, resp):
     #         resp.raw_response.url: the url, again
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
-    return list()
+    if not resp.status == 200 or infinite_trap(resp) or is_large_file(resp):
+        print(f"The following actual url {resp.url} had error code {resp.error}.\nReached via url: {url}")
+        return list()
+    # Store current url and resp if it is valid (status 200)
+    store_url_content(resp)
+
+    urls = set()
+    soup = BeautifulSoup(resp.raw_response.content, 'html.parser')
+    for link in soup.find_all('a'):
+        url = link.get('href')
+        parsed = urlparse(url)
+        removed_fragment = urlunparse((parsed.scheme, parsed.netloc, parsed.path, parsed.params, parsed.query, ''))
+        urls.add(removed_fragment)
+    return list(urls)
 
 def is_valid(url):
     # Decide whether to crawl this url or not. 
@@ -25,6 +40,41 @@ def is_valid(url):
         parsed = urlparse(url)
         if parsed.scheme not in set(["http", "https"]):
             return False
+        ics_domains = [
+            r".*\.ics\.uci\.edu",
+            r".*\.cs\.uci\.edu",
+            r".*\.informatics\.uci\.edu",
+            r".*\.stat\.uci\.edu",
+            r"today\.uci\.edu/department/information_computer_sciences"
+        ]
+        domain_match = any(re.match(domain, parsed.netloc) for domain in ics_domains)
+        if not domain_match:
+            return False
+        
+        if re.match(
+            r".*\.(css|js|bmp|gif|jpe?g|ico"
+            + r"|png|tiff?|mid|mp2|mp3|mp4"
+            + r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
+            + r"|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names"
+            + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
+            + r"|epub|dll|cnf|tgz|sha1"
+            + r"|thmx|mso|arff|rtf|jar|csv"
+            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed.path.lower()):
+            return False
+
+        action_urls = [
+            r"action=download&upname=",
+            r"action=upload&upname=",
+            r"action=login",
+            r"action=edit",
+            r"action=refcount",
+            r"action=crypt",
+            r"action=search&q"
+        ]
+        action_match = any(re.search(action, parsed.query) for action in action_urls)
+        if action_match:
+            return False
+
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
@@ -33,8 +83,8 @@ def is_valid(url):
             + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
-
+            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed.query.lower())
+        
     except TypeError:
         print ("TypeError for ", parsed)
         raise

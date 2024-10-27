@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 
+uci.edu
+
 # Distribution / packaging
 .Python
 build/
@@ -108,3 +110,5 @@ venv.bak/
 
 *.full.py
 *.shelve
+
+x.com/
