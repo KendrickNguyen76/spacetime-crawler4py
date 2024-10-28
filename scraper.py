@@ -75,7 +75,13 @@ def is_valid(url):
             r"share=",
             r"outlook-ical=",
             r"ical=",
-            r"redirect_to="
+            r"redirect_to=",
+            r"filter%5Bemployee_type",
+            r"filter%5Boffices_ics",
+            r"filter%5Bresearch_areas_ics",
+            r"filter%5Bunits",
+            r"filter%5Bpartnerships_posts",
+            r"filter%5B"
         ]
         query_match = any(re.search(query, parsed.query) for query in query_urls)
         if query_match:
