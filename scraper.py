@@ -1,5 +1,6 @@
 import re
 from urllib.parse import urlparse, urlunparse
+from dateutil.parser import parse
 from bs4 import BeautifulSoup
 from utils.store_url import store_url_content
 from utils.is_valid_checks import infinite_trap, is_large_file
@@ -41,16 +42,16 @@ def is_valid(url):
         if parsed.scheme not in set(["http", "https"]):
             return False
         ics_domains = [
-            r".*\.ics\.uci\.edu",
-            r".*\.cs\.uci\.edu",
-            r".*\.informatics\.uci\.edu",
-            r".*\.stat\.uci\.edu",
+            r"(?:.*\.)?ics\.uci\.edu",
+            r"(?:.*\.)?cs\.uci\.edu",
+            r"(?:.*\.)?informatics\.uci\.edu",
+            r"(?:.*\.)?stat\.uci\.edu",
             r"today\.uci\.edu/department/information_computer_sciences"
         ]
         domain_match = any(re.match(domain, parsed.netloc) for domain in ics_domains)
         if not domain_match:
             return False
-        
+        parsed_path = parsed.path.lower()
         if re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
@@ -59,20 +60,35 @@ def is_valid(url):
             + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed.path.lower()):
+            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed_path):
             return False
-
-        action_urls = [
+        
+        query_urls = [
             r"action=download&upname=",
             r"action=upload&upname=",
             r"action=login",
             r"action=edit",
             r"action=refcount",
             r"action=crypt",
-            r"action=search&q"
+            r"action=search&q",
+            r"tribe-bar-date=",
+            r"share=",
+            r"outlook-ical=",
+            r"ical=",
+            r"redirect_to=",
+            r"filter%5Bemployee_type",
+            r"filter%5Boffices_ics",
+            r"filter%5Bresearch_areas_ics",
+            r"filter%5Bunits",
+            r"filter%5Bpartnerships_posts",
+            r"filter%5B"
         ]
-        action_match = any(re.search(action, parsed.query) for action in action_urls)
-        if action_match:
+        query_match = any(re.search(query, parsed.query) for query in query_urls)
+        if query_match:
+            return False
+        
+        split_parsed_path = str(parsed_path).split("/")
+        if len(split_parsed_path) > 1 and is_date(split_parsed_path[-2]):
             return False
 
         return not re.match(
@@ -88,3 +104,10 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
+
+def is_date(path, fuzzy=False):
+    try:
+        parse(path, fuzzy=fuzzy)
+        return True
+    except ValueError:
+        return False
