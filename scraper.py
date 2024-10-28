@@ -116,3 +116,6 @@ def is_date(path, fuzzy=False):
         return True
     except ValueError:
         return False
+
+if __name__ == "__main__":
+    print(is_valid("https://isg.ics.uci.edu/events/tag/talks/day/2024-06-06"))

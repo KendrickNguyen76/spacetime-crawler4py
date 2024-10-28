@@ -19,14 +19,13 @@ def store_url_content(resp):
     content = resp.raw_response.content
 
     folder_path = get_domain_path(url)
-    os.makedirs(folder_path, exist_ok=True)
+    zip_filename = f"{folder_path}.zip"
 
-    # Avoid special characters like '&', '/', '?' in urls that mean smt different in file paths
-    url_encoded = base64.urlsafe_b64encode(url.encode()).decode()
-    zip_filename = os.path.join(folder_path, f"{url_encoded}.zip")
-
+    parent_dir = os.path.dirname(folder_path)
+    os.makedirs(parent_dir, exist_ok=True)
+    print(f"parent_dict: {parent_dir}, folder_path {folder_path}")
     with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        zipf.writestr(f"{url_encoded}.txt", content.decode('utf-8', errors='ignore'))
+        zipf.writestr(f"{os.path.basename(folder_path)}.txt", content.decode('utf-8', errors='ignore'))
 
     return []
 
