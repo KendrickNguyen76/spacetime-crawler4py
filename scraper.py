@@ -42,10 +42,10 @@ def is_valid(url):
         if parsed.scheme not in set(["http", "https"]):
             return False
         ics_domains = [
-            r".*\.ics\.uci\.edu",
-            r".*\.cs\.uci\.edu",
-            r".*\.informatics\.uci\.edu",
-            r".*\.stat\.uci\.edu",
+            r"(?:.*\.)?ics\.uci\.edu",
+            r"(?:.*\.)?cs\.uci\.edu",
+            r"(?:.*\.)?informatics\.uci\.edu",
+            r"(?:.*\.)?stat\.uci\.edu",
             r"today\.uci\.edu/department/information_computer_sciences"
         ]
         domain_match = any(re.match(domain, parsed.netloc) for domain in ics_domains)
@@ -62,16 +62,6 @@ def is_valid(url):
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed_path):
             return False
-        # calendar_urls = [
-            # "wics-meeting-dbh-5011",
-            # "events/tag/talk/day",
-            # "events/tag/talk",
-            # "events/category/info-session/day",
-        #     "university-of-wisconsin-madison-a-video-game-can-change-the-brain-may-improve-empathy-in-middl"
-        # ]
-        # for calendar_url in calendar_urls:
-        #     if calendar_url in parsed_path:
-        #         return False
         
         query_urls = [
             r"action=download&upname=",
@@ -92,7 +82,6 @@ def is_valid(url):
             return False
         
         split_parsed_path = str(parsed_path).split("/")
-        #print(split_parsed_path)
         if len(split_parsed_path) > 1 and is_date(split_parsed_path[-2]):
             return False
 
@@ -111,7 +100,6 @@ def is_valid(url):
         raise
 
 def is_date(path, fuzzy=False):
-    ''' Check if path is a date '''
     try:
         parse(path, fuzzy=fuzzy)
         return True
