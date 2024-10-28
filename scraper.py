@@ -62,16 +62,16 @@ def is_valid(url):
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed_path):
             return False
-        calendar_urls = [
+        # calendar_urls = [
             # "wics-meeting-dbh-5011",
             # "events/tag/talk/day",
             # "events/tag/talk",
             # "events/category/info-session/day",
-            "university-of-wisconsin-madison-a-video-game-can-change-the-brain-may-improve-empathy-in-middl"
-        ]
-        for calendar_url in calendar_urls:
-            if calendar_url in parsed_path:
-                return False
+        #     "university-of-wisconsin-madison-a-video-game-can-change-the-brain-may-improve-empathy-in-middl"
+        # ]
+        # for calendar_url in calendar_urls:
+        #     if calendar_url in parsed_path:
+        #         return False
         
         query_urls = [
             r"action=download&upname=",
