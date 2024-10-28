@@ -89,8 +89,9 @@ def is_valid(url):
         if query_match:
             return False
         
-        date_pattern = r'/(\d{4}([-/]\d{2}([-/]\d{2})?)?|(\d{2}([-/]\d{4})))$'
-        if bool(re.search(date_pattern, parsed_path)):
+        date_pattern = r"^\d{4}([-/.]\d{2}([-/.]\d{2})?)$"
+        split_parsed_path = parsed_path.split("/")
+        if re.match(date_pattern, split_parsed_path[-1]):
             return False
 
         return not re.match(
