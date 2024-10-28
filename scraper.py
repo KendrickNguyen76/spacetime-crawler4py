@@ -63,10 +63,11 @@ def is_valid(url):
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|heic)$", parsed_path):
             return False
         calendar_urls = [
-            "wics-meeting-dbh-5011",
-            "events/tag/talk/day",
-            "events/tag/talk",
-            "events/category/info-session/day"
+            # "wics-meeting-dbh-5011",
+            # "events/tag/talk/day",
+            # "events/tag/talk",
+            # "events/category/info-session/day",
+            "university-of-wisconsin-madison-a-video-game-can-change-the-brain-may-improve-empathy-in-middl"
         ]
         for calendar_url in calendar_urls:
             if calendar_url in parsed_path:
@@ -90,9 +91,9 @@ def is_valid(url):
         if query_match:
             return False
         
-        date_pattern = r"^\d{4}([-/.]\d{2}([-/.]\d{2})?)$"
-        split_parsed_path = parsed_path.split("/")
-        if re.match(date_pattern, split_parsed_path[-1]) or is_date(split_parsed_path[-1]):
+        split_parsed_path = str(parsed_path).split("/")
+        #print(split_parsed_path)
+        if len(split_parsed_path) > 1 and is_date(split_parsed_path[-2]):
             return False
 
         return not re.match(
@@ -116,6 +117,3 @@ def is_date(path, fuzzy=False):
         return True
     except ValueError:
         return False
-
-if __name__ == "__main__":
-    print(is_valid("https://isg.ics.uci.edu/events/tag/talks/day/2024-06-06"))
