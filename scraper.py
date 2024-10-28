@@ -1,5 +1,6 @@
 import re
 from urllib.parse import urlparse, urlunparse
+from dateutil.parser import parse
 from bs4 import BeautifulSoup
 from utils.store_url import store_url_content
 from utils.is_valid_checks import infinite_trap, is_large_file
@@ -91,7 +92,7 @@ def is_valid(url):
         
         date_pattern = r"^\d{4}([-/.]\d{2}([-/.]\d{2})?)$"
         split_parsed_path = parsed_path.split("/")
-        if re.match(date_pattern, split_parsed_path[-1]):
+        if re.match(date_pattern, split_parsed_path[-1]) or is_date(split_parsed_path[-1]):
             return False
 
         return not re.match(
@@ -107,3 +108,11 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
+
+def is_date(path, fuzzy=False):
+    ''' Check if path is a date '''
+    try:
+        parse(path, fuzzy=fuzzy)
+        return True
+    except ValueError:
+        return False

@@ -7,6 +7,7 @@ __pycache__/
 *.so
 
 uci.edu
+url_mappings.json
 
 # Distribution / packaging
 .Python
