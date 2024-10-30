@@ -1,6 +1,6 @@
 # Check if url has repeated segments or is too long
 def infinite_trap(resp):
-    return len(resp.raw_response.url) > 200 or len(resp.raw_response.url.split('/')) > 10
+    return len(resp.raw_response.url) > 230 or len(resp.raw_response.url.split('/')) > 11
 
 def is_large_file(resp):
     max_size = 1024 * 1024 * 4 # 4 MB max size

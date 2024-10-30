@@ -46,7 +46,7 @@ def is_valid(url):
             r"(?:.*\.)?cs\.uci\.edu",
             r"(?:.*\.)?informatics\.uci\.edu",
             r"(?:.*\.)?stat\.uci\.edu",
-            r"today\.uci\.edu/department/information_computer_sciences"
+            r"(?:.*\.)?today\.uci\.edu/department/information_computer_sciences"
         ]
         domain_match = any(re.match(domain, parsed.netloc) for domain in ics_domains)
         if not domain_match:
@@ -76,11 +76,6 @@ def is_valid(url):
             r"outlook-ical=",
             r"ical=",
             r"redirect_to=",
-            r"filter%5Bemployee_type",
-            r"filter%5Boffices_ics",
-            r"filter%5Bresearch_areas_ics",
-            r"filter%5Bunits",
-            r"filter%5Bpartnerships_posts",
             r"filter%5B"
         ]
         query_match = any(re.search(query, parsed.query) for query in query_urls)
