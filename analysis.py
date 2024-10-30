@@ -6,6 +6,8 @@ from utils import tokenizer, extract_text
 
 # Function to search through directories and find zip files
 def analysis(directory, url_mapping):
+    longest_page = None
+    longest_length = 0
     # Traverse the directory and subdirectories
     for root, _, files in os.walk(directory):
         for file in files:
@@ -29,11 +31,16 @@ def analysis(directory, url_mapping):
                                     
                                     # Print the URL and HTML content
                                     print(f"URL: {url}")
-                                    print(tokenizer.tokenize(extract_text.extract_text(html_content)))
+                                    tokens = tokenizer.tokenize(extract_text.extract_text(html_content))
+                                    if len(tokens) > longest_length:
+                                        longest_page = url
+                                        longest_length = len(tokens)
+                                    print(f"Tokens: {tokens}")
                                     # print(f"HTML Content:\n{html_content}\n{'-'*40}\n")
                                     # print(tokenizer.tokenize(text_file))
                             else:
                                 print(f"No URL found for encrypted string: {encrypted_string}")
+    print(f"Longest page: {longest_page} with {longest_length} tokens")
 
 
 if __name__ == "__main__":
