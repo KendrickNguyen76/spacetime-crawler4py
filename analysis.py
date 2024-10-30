@@ -1,7 +1,7 @@
 import os
 import zipfile
 import json
-
+from utils import tokenizer, extract_text
 
 
 # Function to search through directories and find zip files
@@ -29,7 +29,9 @@ def analysis(directory, url_mapping):
                                     
                                     # Print the URL and HTML content
                                     print(f"URL: {url}")
-                                    print(f"HTML Content:\n{html_content}\n{'-'*40}\n")
+                                    print(tokenizer.tokenize(extract_text.extract_text(html_content)))
+                                    # print(f"HTML Content:\n{html_content}\n{'-'*40}\n")
+                                    # print(tokenizer.tokenize(text_file))
                             else:
                                 print(f"No URL found for encrypted string: {encrypted_string}")
 
