@@ -6,16 +6,15 @@ and return the top 50 most common words
 """
 
 # Imports
-import extract_text
-import tokenizer
+from utils import tokenizer, extract_text
 import os
 from pathlib import Path
 
 # Constants
 # File path for full folder, we're going to assume it's always in the same place
-HTML_ZIP_DIRECTORY = Path("../uci.edu")  
+HTML_ZIP_DIRECTORY = Path("uci.edu")  
 # File path for a subdirectory within uci.edu that will be used for testing
-TEST_FILES_DIRECTORY = Path("../uci.edu/accessibility/ics")
+TEST_FILES_DIRECTORY = Path("uci.edu/accessibility/ics")
 
 # get_top_fifty_words()
 # Needs to be given a path to the directory that contains all of 
