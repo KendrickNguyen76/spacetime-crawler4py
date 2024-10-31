@@ -35,14 +35,13 @@ def tokenize_line(line_of_text : str) -> list[str]:
 
 
 # tokenize()
-# Needs to be given a file path. Converts all of the text of that file into
+# Needs to be given a list of strings. Converts the list of strings into
 # a list of tokens.
-def tokenize(file_path : str) -> list[str]:
+def tokenize(text_list : list[str]) -> list[str]:
     all_tokens = []
 
-    with open(file_path) as word_file:
-        for line in word_file:
-            all_tokens += tokenize_line(line)
+    for single_text in text_list:
+        all_tokens += tokenize_line(single_text)
 
     return all_tokens
 
