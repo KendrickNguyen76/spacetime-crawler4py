@@ -6,7 +6,7 @@ and return the top 50 most common words
 """
 
 # Imports
-from utils import tokenizer, extract_text
+from utils import tokenizer, extract_text, top_fifty_dict
 import os
 import zipfile
 from pathlib import Path
@@ -39,6 +39,8 @@ def process_zip_file_text(zip_file_path : Path):
 # the HTML zip files. Goes through all of them and find the top
 # 50 words.
 def get_top_fifty_words(file_path : Path):
+    total_word_frequency = top_fifty_dict.TopFiftyDict()
+
     # Walks through the directories and subdirectories of file_path
     for root, dir, files in os.walk(file_path):
         for file in files:
@@ -48,6 +50,9 @@ def get_top_fifty_words(file_path : Path):
                 
                 # Pass it off to process_zip_file_text() to handle tokenization
                 token_list = process_zip_file_text(zip_path)
+                total_word_frequency.add_to_dict(token_list)
+    
+    print(total_word_frequency)
 
                 
                     
