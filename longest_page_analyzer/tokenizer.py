@@ -24,7 +24,10 @@ def tokenize_line(line_of_text : str) -> list[str]:
         if (48 <= code <= 57 or 97 <= code <= 122):
             curr_word += chr(code)
         else:
-            if len(curr_word) > 0 and (curr_word not in STOP_WORDS):
+            # Changed the minimum length of curr_word to be 2 instead of 1
+            # this is to avoid accidentally picking up on too many random 
+            # singular letters
+            if len(curr_word) > 1 and (curr_word not in STOP_WORDS):
                 words.append(curr_word)
                 curr_word = ""
 
