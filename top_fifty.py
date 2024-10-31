@@ -33,7 +33,6 @@ def process_zip_file_text(zip_file_path : Path):
                 return tokenizer.tokenize(extract_text.extract_text(html_content))
 
 
-
 # get_top_fifty_words()
 # Needs to be given a path to the directory that contains all of 
 # the HTML zip files. Goes through all of them and find the top
@@ -54,10 +53,8 @@ def get_top_fifty_words(file_path : Path):
     
     print(total_word_frequency)
 
-                
-                    
 
 # Main
 # Gets called when script is run
 if __name__ == "__main__":
-    get_top_fifty_words(TEST_FILES_DIRECTORY)
+    get_top_fifty_words(HTML_ZIP_DIRECTORY)

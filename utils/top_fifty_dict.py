@@ -34,6 +34,5 @@ class TopFiftyDict:
 
     # Handles string representation of a TopFiftyDict
     def __str__(self):
-        print(len(self.__token_dict))
         return str(self.__token_dict)
     
