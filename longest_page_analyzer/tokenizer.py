@@ -24,7 +24,7 @@ def tokenize_line(line_of_text : str) -> list[str]:
         if (48 <= code <= 57 or 97 <= code <= 122):
             curr_word += chr(code)
         else:
-            if len(curr_word) > 0:
+            if len(curr_word) > 0 and (curr_word not in STOP_WORDS):
                 words.append(curr_word)
                 curr_word = ""
 
