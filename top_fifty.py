@@ -46,7 +46,7 @@ def get_top_fifty_words(file_path : Path):
             if file.endswith(".zip"):
                 # Creates a path for the zip_file
                 zip_path = Path(root, file)
-                
+                #print(zip_path)
                 # Pass it off to process_zip_file_text() to handle tokenization
                 token_list = process_zip_file_text(zip_path)
                 total_word_frequency.add_to_dict(token_list)
