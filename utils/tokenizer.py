@@ -11,14 +11,16 @@ the longest web page.
 # Tokens are defined as a sequence of english, alphanumeric characters
 def tokenize_line(line_of_text : str) -> list[str]:
     line_of_text += "\n"
+    line_of_text = line_of_text.lower()
     curr_word = ""
     words = []
+    accept = set(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'])
 
     for i in range(len(line_of_text)):
-        code = ord(line_of_text[i].lower())
+        c = line_of_text[i]
 
-        if (48 <= code <= 57 or 97 <= code <= 122):
-            curr_word += chr(code)
+        if c in accept:
+            curr_word += c
         else:
             if len(curr_word) > 0 and not_stop_word(curr_word):
                 words.append(curr_word)
