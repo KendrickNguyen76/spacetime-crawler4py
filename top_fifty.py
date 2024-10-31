@@ -51,10 +51,10 @@ def get_top_fifty_words(file_path : Path):
                 token_list = process_zip_file_text(zip_path)
                 total_word_frequency.add_to_dict(token_list)
     
-    print(total_word_frequency)
+    return total_word_frequency
 
 
 # Main
 # Gets called when script is run
 if __name__ == "__main__":
-    get_top_fifty_words(HTML_ZIP_DIRECTORY)
+    print(get_top_fifty_words(HTML_ZIP_DIRECTORY))
