@@ -30,7 +30,7 @@ def process_zip_file_text(zip_file_path : Path):
             with zip_ref.open(file_name) as text_file:
                 # Turn the text in each file into tokens
                 html_content = text_file.read().decode("utf-8")
-                return tokenizer.tokenize(extract_text.extract_text(html_content))
+                return tokenizer.tokenize(extract_text.simple_extract_text(html_content))
 
 
 # get_top_fifty_words()

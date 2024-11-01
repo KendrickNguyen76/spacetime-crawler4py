@@ -35,3 +35,10 @@ def extract_text(html_text):
     # Combine keywords and visible text, then print or use further
     all_keywords = keywords + visible_texts
     return all_keywords
+
+
+# Simpler version of extract_text, written just to see if the text
+# is being cleaned properly in comparison to extract_text
+def simple_extract_text(html_text : str) -> list[str]:
+    soup = BeautifulSoup(html_text, "html.parser")
+    return [string for string in soup.stripped_strings]
