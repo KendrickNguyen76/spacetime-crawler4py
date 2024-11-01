@@ -28,9 +28,10 @@ def tokenize_line(line_of_text : str) -> list[str]:
             # Changed the minimum length of curr_word to be 2 instead of 1
             # this is to avoid accidentally picking up on too many random 
             # singular letters
-            if len(curr_word) > 2 and (curr_word not in STOP_WORDS):
+            if (curr_word not in STOP_WORDS) and len(curr_word) > 2:
                 words.append(curr_word)
-                curr_word = ""
+
+            curr_word = ""
 
     return words
 
@@ -42,6 +43,7 @@ def tokenize(text_list : list[str]) -> list[str]:
     all_tokens = []
 
     for single_text in text_list:
+        #print(single_text)
         all_tokens += tokenize_line(single_text)
 
     return all_tokens

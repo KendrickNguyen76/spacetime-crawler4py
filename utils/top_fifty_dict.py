@@ -32,7 +32,10 @@ class TopFiftyDict:
         
         self.__sort_dict()
 
-    def print_fifty_word_dict()
+    # Prints self.__token_dict()
+    def print_fifty_word_dict(self):
+        for key,value in self.__token_dict.items():
+            print(key + ": " + str(value))
     
     # Handles string representation of a TopFiftyDict
     def __str__(self):

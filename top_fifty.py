@@ -57,4 +57,5 @@ def get_top_fifty_words(file_path : Path):
 # Main
 # Gets called when script is run
 if __name__ == "__main__":
-    print(get_top_fifty_words(HTML_ZIP_DIRECTORY))
+    top_fifty = get_top_fifty_words(TEST_FILES_DIRECTORY)
+    top_fifty.print_fifty_word_dict()
