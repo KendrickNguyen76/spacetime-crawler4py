@@ -6,9 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-uci.edu
-url_mappings.json
-
 # Distribution / packaging
 .Python
 build/
@@ -111,5 +108,11 @@ venv.bak/
 
 *.full.py
 *.shelve
+
+# HTML pages
+uci.edu/
+
+#json
+url_mappings.json
 
 x.com/
