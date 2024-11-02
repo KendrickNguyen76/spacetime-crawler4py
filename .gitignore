@@ -111,3 +111,6 @@ venv.bak/
 
 # HTML pages
 uci.edu/
+
+#json
+url_mappings.json
