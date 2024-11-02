@@ -18,8 +18,11 @@ def extract_next_links(url, resp):
     #         resp.raw_response.url: the url, again
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
-    if not resp.status == 200 or infinite_trap(resp) or is_large_file(resp):
+    if not resp.status == 200:
         print(f"The following actual url {resp.url} had error code {resp.error}.\nReached via url: {url}")
+        return list()
+    if infinite_trap(resp):
+        print(f"The following actual url {resp.url} was infinite trap.\nReached via url: {url}")
         return list()
     # Store current url and resp if it is valid (status 200)
     store_url_content(resp)
@@ -46,7 +49,7 @@ def is_valid(url):
             r"(?:.*\.)?cs\.uci\.edu",
             r"(?:.*\.)?informatics\.uci\.edu",
             r"(?:.*\.)?stat\.uci\.edu",
-            r"today\.uci\.edu/department/information_computer_sciences"
+            r"(?:.*\.)?today\.uci\.edu/department/information_computer_sciences"
         ]
         domain_match = any(re.match(domain, parsed.netloc) for domain in ics_domains)
         if not domain_match:
@@ -76,11 +79,6 @@ def is_valid(url):
             r"outlook-ical=",
             r"ical=",
             r"redirect_to=",
-            r"filter%5Bemployee_type",
-            r"filter%5Boffices_ics",
-            r"filter%5Bresearch_areas_ics",
-            r"filter%5Bunits",
-            r"filter%5Bpartnerships_posts",
             r"filter%5B"
         ]
         query_match = any(re.search(query, parsed.query) for query in query_urls)
