@@ -34,8 +34,10 @@ class TopFiftyDict:
 
     # Prints self.__token_dict()
     def print_fifty_word_dict(self):
-        for key,value in self.__token_dict.items():
-            print(key + ": " + str(value))
+        with open("top50words.txt", "w") as f:
+            for key, value in self.__token_dict.items():
+                line = f"{key}: {value}\n"
+                f.write(line)
     
     # Handles string representation of a TopFiftyDict
     def __str__(self):
