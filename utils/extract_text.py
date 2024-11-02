@@ -1,11 +1,3 @@
-# extract_text.py
-
-"""
-Code for a program that extracts all relevant text from an html file.
-Written by Diego.
-"""
-
-# Imports
 from bs4 import BeautifulSoup
 import re
 
