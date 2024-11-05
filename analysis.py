@@ -5,7 +5,7 @@ from utils import tokenizer, extract_text
 from urllib.parse import urlparse, urlunparse
 from collections import defaultdict
 
-# Function to search through directories and find zip files
+# Function to iterate over zip files of site content and report analysis
 def analysis(directory, url_mapping):
     longest_page = None
     longest_length = 0
@@ -18,25 +18,19 @@ def analysis(directory, url_mapping):
         for root, _, files in os.walk(directory):
             for file in files:
                 if file.endswith(".zip"):
-                    zip_path = os.path.join(root, file)
+                    z_path = os.path.join(root, file)
                     
-                    # Open the zip file and extract the text file
-                    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                        for zip_info in zip_ref.infolist():
-                            # Check if the file is a text file
+                    with zipfile.ZipFile(z_path, 'r') as z_file:
+                        for zip_info in z_file.infolist():
                             if zip_info.filename.endswith(".txt"):
-                                # Extract the encrypted string (without '.txt')
-                                encrypted_string = os.path.splitext(os.path.basename(zip_info.filename))[0]
-                                
-                                # Match the encrypted string to the URL in JSON mapping
-                                url = url_mapping.get(encrypted_string)
+                                encrypted_url = os.path.splitext(os.path.basename(zip_info.filename))[0]
+                                url = url_mapping.get(encrypted_url)
                                 if url:
                                     subdomain, stripped_url = url_extract(url)
                                     urls.add(stripped_url)
                                     if subdomain:
                                         subdomains[subdomain].add(stripped_url)
-                                    # Read the content of the text file
-                                    with zip_ref.open(zip_info.filename) as text_file:
+                                    with z_file.open(zip_info.filename) as text_file:
                                         html_content = text_file.read().decode("utf-8")
                                         
                                         # Write the URL and HTML content to analysis.txt
@@ -46,7 +40,7 @@ def analysis(directory, url_mapping):
                                             longest_page = stripped_url
                                             longest_length = len(tokens)
                                 else:
-                                    output_file.write(f"No URL found for encrypted string: {encrypted_string}\n")
+                                    output_file.write(f"No URL found for encrypted url: {encrypted_url}\n")
         
         # Write subdomain analysis to analysis.txt
         output_file.write("Subdomains and their URL counts:\n")
@@ -69,11 +63,10 @@ def url_extract(url):
     return (subdomain, stripped_url)
 
 if __name__ == "__main__":
-    # Define the main directory and JSON mapping filename
-    main_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uci.edu")  # Assumes script is in the same location
+    # Define the main directory which is where all the zip files of site content are stored
+    main_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uci.edu")
     json_mapping_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "url_mappings.json")
-
-    # Load the JSON mapping file
+    # Mapping file maps encrypted urls to actual urls
     with open(json_mapping_file, "r") as f:
         url_mapping = json.load(f)
     analysis(main_directory, url_mapping)
