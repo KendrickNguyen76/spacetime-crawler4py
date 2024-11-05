@@ -43,7 +43,6 @@ def tokenize(text_list : list[str]) -> list[str]:
     all_tokens = []
 
     for single_text in text_list:
-        #print(single_text)
         all_tokens += tokenize_line(single_text)
 
     return all_tokens
